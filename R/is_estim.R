@@ -54,9 +54,7 @@ c_sample <- function(N, alpha, D_0, c_j){
   comp <- sample(1:length(alpha), N, replace = T, prob = alpha)
   counts[as.integer(names(table(comp)))] <- table(comp)
   Pf <- lapply(which(counts != 0), function(i) {
-    s <- D_0
-    diag(s) <- diag(D_0) * c_j[[i]]^2
-    mvtnorm::rmvnorm(n = counts[i], mean = rep(0, nrow(D_0)), sigma = s)
+    mvtnorm::rmvnorm(n = counts[i], mean = rep(0, nrow(D_0)), sigma = D_0 * c_j[[i]]^2)
   })
   return(do.call("rbind", Pf))
 }

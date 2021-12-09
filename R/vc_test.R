@@ -10,7 +10,7 @@ vc_test <- function(eta_prime, se, omega_inv_sq, ce, tol = 1e-8){
   eig <- eigen(t(omega_inv_sq) %*% diag(se) %*% ce %*% diag(se) %*% omega_inv_sq,
                symmetric = T)
   eigval <- eig$values[n:1]; eigvec <- -eig$vectors[,n:1]
-  delta2 <- (t(eigvec)[,eigval > tol] %*% eta_prime)^2;
+  delta2 <- (t(eigvec[, eigval > tol]) %*% eta_prime)^2
   Delta <- eigval[eigval > tol]
   return(vc_optim(init, n, delta2, Delta))
 }

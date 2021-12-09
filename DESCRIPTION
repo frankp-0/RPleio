@@ -2,9 +2,7 @@ Package: RPleio
 Title: R implementation of PLEIO test
 Version: 0.0.0.9000
 Authors@R:
-  c(person("Frank", "Ockerman", , "frank.ockerman@gmail.com", role = c("aut", "cre")),
-    person("Hanyu", "Li", , "lihanyu@umich.edu", role = c("aut", "cre"))
-    )
+    person("Frank", "Ockerman", , "frank.ockerman@gmail.com", role = c("aut", "cre"))
 Description: This package represents our attempt to reimplement the PLEIO hypothesis testing procedure of Lee et al. (2021) in R. It omits a number of features, such as p-value flattening, visualization, and effect size standardization. Our goal was simply to port the variance component test and importance sampling procedure to R for our own edification and in fulfillment of the final project for a statistical computing course.
 License: Unlimited
 Encoding: UTF-8
