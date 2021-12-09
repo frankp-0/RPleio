@@ -53,7 +53,7 @@ isf <- opt$isf
 # Importance Sampling ==============================
 n <- ncol(sumstat) / 2
 #' @keywords internal
-sqrt_ginv <- function(X, tol = sqrt(1e-16)){
+sqrt_ginv <- function(X, tol = sqrt(1e-8)){
   Xsvd <- svd(X);
   u <- Xsvd$u; d <- Xsvd$d; v <- t(Xsvd$v)    
   pos <- d > max(tol * d[1], 0)
