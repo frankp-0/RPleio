@@ -6,6 +6,7 @@ library(data.table)
 library(parallel)
 library(magrittr)
 library(RPleio)
+library(tictoc)
 
 option_list <- list(
   make_option(c("-s", "--summary"),
@@ -41,6 +42,7 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list = option_list))
 
+tic()
 # Read data
 sumstat <- fread(opt$summary)[,-1]
 cg <- as.matrix(fread(opt$cg))
@@ -66,12 +68,13 @@ if (isf == "") {
   ind <- seq(2, 2 * n, 2)
   se <- 1 / sqrt(colMeans(1 / sumstat[, ..ind]^2))
   isf <- paste0(out_pre, ".is")
+  print("Performing importance sampling...")
   is_estim(nis, se, omega_inv_sq, ce, isf, ncores)
 }
 
 # Variance Component Test ==============================
 ind <- seq(1, 2 * n, 2)
-
+print("Performing variance component test...")
 df <- mclapply(1:nrow(sumstat), function(i) {
   se <- unlist(sumstat[i, .SD, .SDcols = ind + 1])
   eta_prime <- t(omega_inv_sq) %*% unlist(sumstat[i, ..ind])
@@ -91,5 +94,6 @@ a <- log(is$p)[nrow(is)] - b * is$theta[nrow(is)]
 df[pleio_stat <= is$theta[2], pleio_p := 1]
 df[pleio_stat > is$theta[40], pleio_p := exp(a + b * pleio_stat)]
 
-
-fwrite(df, paste0(out_pre, ".vc"))
+print("Writing output file...")
+fwrite(df, paste0(out_pre, ".txt.gz"), compress = "gzip")
+toc()
