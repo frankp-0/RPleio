@@ -12,11 +12,11 @@ vc_test <- function(eta_prime, se, omega_inv_sq, ce, tol = 1e-8){
   eigval <- eig$values[n:1]; eigvec <- -eig$vectors[,n:1]
   delta2 <- (t(eigvec[, eigval > tol]) %*% eta_prime)^2
   Delta <- eigval[eigval > tol]
-  return(vc_optim(init, n, delta2, Delta))
+  return(vc_optim(n, delta2, Delta))
 }
 
 #' @keywords internal
-vc_optim <- function(b, n, d1, d2){
+vc_optim <- function(n, d1, d2){
   it <- 10^((-36:23)/4)
   init <- it[which.max(sapply(it, function(i) llike(i, n, d1, d2)))]
   tausq <- max(0, newton_optim(init, d1, d2))
